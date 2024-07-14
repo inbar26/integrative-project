@@ -53,6 +53,8 @@ function Overview(props) {
         const userObject = await objectService.getObjectByAlias(currentUser);
         console.log("userObject:");
         console.log(userObject);
+
+        setImg(userObject[0].objectDetails.profileImageUrl);
         return userObject;
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -61,7 +63,6 @@ function Overview(props) {
     const userExtraDetails = fetchCurrentUser();
     console.log("userExtraDetails:");
     console.log(userExtraDetails);
-    setImg(userExtraDetails[0].objectDetails.profileImageUrl);
   }, [img]);
 
   return (
@@ -74,7 +75,7 @@ function Overview(props) {
         }}
       >
         <Avatar
-          src={img}
+          src={img ? img : null}
           alt="Avatar"
           sx={{ width: 100, height: 100, marginRight: "10px" }}
         />
