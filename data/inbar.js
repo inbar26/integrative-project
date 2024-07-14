@@ -67,4 +67,25 @@ export const deliveryNoteArray = [
 	},
 ];
 
+export const receiptTaxInvoiceArray = [
+	{
+		customerName: "inbar",
+		createDate: "22/4/2000",
+		documentDescription: "Buy Boll",
+		productArray: [
+			{
+				name: "boll",
+				quantity: "5",
+				unitPrice: "10",
+				currency: "",
+				vat: true,
+			},
+		],
+		PaymentType: "Credit Card",
+		date: "20/01/2024",
+		price: "1000",
+		notes: "Beautiful ball",
+	},
+];
+
 export default taxInvoiceArray;

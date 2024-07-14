@@ -85,7 +85,7 @@ export default function ButtonPreview(props) {
 						sx={{ color: "#0eba97", fontFamily: "Arial", fontWeight: "bold" }}
 						gutterBottom
 					>
-						Tax invoice Details:
+						Document Details:
 					</Typography>
 					<Typography gutterBottom>
 						{`customer Name: ${props.details.customerName}`} <br />
