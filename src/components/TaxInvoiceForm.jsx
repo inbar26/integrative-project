@@ -23,11 +23,12 @@ import Delete from "@mui/icons-material/Delete";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import Cookies from "js-cookie";
-import { DatePicker } from "rsuite";
 import Autocomplete from "@mui/material/Autocomplete";
 import * as objectService from "../services/objectService";
 import * as commandService from "../services/commandService";
 import * as constants from "../utils/constants";
+import { DatePicker } from "antd";
+import * as helper from "../utils/helperFunctions";
 
 const TaxInvoiceForm = (props) => {
   const currentUser = JSON.parse(Cookies.get(props.userEmail));
@@ -54,6 +55,9 @@ const TaxInvoiceForm = (props) => {
       ...prevForm,
       ...details,
     }));
+  };
+  const handleDateChange = (date, dateString) => {
+    updateFormDetails({ paymentDueDate: dateString });
   };
   const handleChangeTaxDetails = (event) => {
     const { name, value } = event.target;
@@ -88,7 +92,7 @@ const TaxInvoiceForm = (props) => {
     }
     setErrorList("");
     newTaxInvoice.productArray.push(newProduct);
-    console.log(newTaxInvoice.productArray);
+    //console.log(newTaxInvoice.productArray);
     //reset input box's:
     setNewProduct({
       name: "",
@@ -115,12 +119,24 @@ const TaxInvoiceForm = (props) => {
     if (validateForm()) {
       setShowAlert(true); // Show the alert on form submission
       setErrorSubmit("");
+      const currDate = helper.myGetCurrDate();
+      newTaxInvoice.createDate = currDate;
       await objectService.storeObjectInDataBase(
         currentUser,
         constants.CLASS_TYPE.FORM,
         constants.FORM_TYPE.TAX_INVOICE,
         newTaxInvoice
       );
+      //Reset NewTaxInvoice fields:
+      setNewTaxInvoice({
+        customer: "",
+        isOpen: false,
+        createDate: "",
+        paymentDueDate: "",
+        documentDescription: "",
+        productArray: [],
+        notes: "",
+      });
     } else {
       setErrorSubmit("Please fill out all required fields.");
       console.log("cannot submit");
@@ -232,30 +248,12 @@ const TaxInvoiceForm = (props) => {
               onChange={handleChangeTaxDetails}
             /> */}
           </Grid>
-          <Grid item xs={10} sm={3}>
-            {/* <DatePicker
-              label="Document Date"
-              name="createDate" //add
-              value={newTaxInvoice.createDate} //add
-              onChange={handleChangeTaxDetails} //add
-              className="custom-input"
-              renderInput={(params) => (
-                <TextField {...params} fullWidth className="custom-input" />
-              )}
-            /> */}
-          </Grid>
-          <Grid item xs={10} sm={3}>
-            <DatePicker />
-            {/* <DatePicker
-              label="Payment Due Date"
-              className="custom-input"
-              name="paymentDueDate"
-              value={newTaxInvoice.paymentDueDate}
-              onChange={handleChangeTaxDetails}
-              renderInput={(params) => (
-                <TextField {...params} fullWidth className="custom-input" />
-              )}
-            /> */}
+
+          <Grid item xs={10} sm={10}>
+            <Typography variant="body2" gutterBottom>
+              Payment due Date:
+            </Typography>
+            <DatePicker onChange={handleDateChange} />
           </Grid>
 
           <Grid item xs={12}>

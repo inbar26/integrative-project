@@ -14,7 +14,9 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import MyPagination from "../components/UsePagination.jsx";
+import { Pagination } from "antd";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 /*
   This component is a Table for the CUSTOMER LIST display
 */
@@ -23,6 +25,7 @@ export default function BasicTable(props) {
   const [customerObjectArray, setCustomerObjectArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(50);
   const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
 
   useEffect(() => {
@@ -60,14 +63,20 @@ export default function BasicTable(props) {
     };
 
     fetchCustomers();
-  }, [page]); // Effect will run whenever currentUser changes
+  }, [page]); // Effect will run whenever Page changes
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box>
+        <Skeleton />
+        <Skeleton animation="wave" />
+        <Skeleton animation="wave" />
+      </Box>
+    );
   }
 
   return (
@@ -128,7 +137,13 @@ export default function BasicTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <MyPagination page={page} onPageChange={handlePageChange} />
+      <Pagination
+        align="center"
+        current={page}
+        onChange={handlePageChange}
+        defaultCurrent={1}
+        total={total}
+      />
     </>
   );
 }
