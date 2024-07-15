@@ -40,7 +40,7 @@ export default function BasicTable(props) {
         const commandDetails = {
           type: constants.CLASS_TYPE.CUSTOMER,
           userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
-          page: page,
+          page: page - 1,
           size: 2,
         };
         console.log("Page Number:");

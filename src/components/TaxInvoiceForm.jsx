@@ -115,7 +115,6 @@ const TaxInvoiceForm = (props) => {
   }, [newTaxInvoice.productArray]);
 
   const handleSubmit = async () => {
-    //taxInvoiceArray.push(newTaxInvoice);
     if (validateForm()) {
       setShowAlert(true); // Show the alert on form submission
       setErrorSubmit("");

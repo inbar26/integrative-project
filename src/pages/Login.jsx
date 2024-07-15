@@ -19,8 +19,8 @@ function Login() {
   }, [data]);
 
   const loginAttempt = async (details) => {
-    console.log("login Attempt");
     try {
+      console.log("login Attempt");
       // get user
       setShowAlert(false);
       const fetchedData = await userService.fetchData(details.email);
@@ -68,11 +68,6 @@ function Login() {
           )}
         </div>
       </div>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>No data fetched yet</p>
-      )}
     </>
   );
 }
