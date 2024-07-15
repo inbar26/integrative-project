@@ -64,7 +64,7 @@ function BusinessCreateArea(props) {
   const customerNames = getCustomerNames();
   //-----------------------------------------------------------
   const handleCustomerChange = (event, newValue) => {
-    props.updateData({ accountant: newValue });
+    props.updateDataExtra({ accountant: newValue });
   };
 
   const handleChange = (event) => {
@@ -129,23 +129,6 @@ function BusinessCreateArea(props) {
           onChange={handleChange}
           required
         />
-        {/* <label htmlFor="accountant">Accountant Email:</label>
-          <Autocomplete
-            required
-            name="accountant"
-            value={props.data.accountant}
-            inputValue={inputCustomer}
-            onInputChange={(event, newInputValue) =>
-              setInputCustomer(newInputValue)
-            }
-            onChange={handleCustomerChange}
-            disablePortal
-            id="combo-box-demo"
-            options={customerNames}
-            isOptionEqualToValue={(option, value) => option === value}
-            getOptionLabel={(option) => option}
-            renderInput={(params) => <TextField {...params} label="Customer" />}
-          /> */}
         <label htmlFor="city">City:</label>
         <input
           type="text"

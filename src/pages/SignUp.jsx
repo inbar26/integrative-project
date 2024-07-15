@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
+  const [password, setPassword] = useState("");
   const [newUser, setNewUser] = useState({
     essentialDetails: {
       email: "",
@@ -19,9 +19,10 @@ function SignUp() {
     },
     extraDetails: {
       profileImageUrl: "",
-      password: "",
+      password: `${password}`,
       firstName: "",
       lastName: "",
+      accountant: "",
 
       businessDetails: {
         registrationNumber: "",
@@ -30,7 +31,6 @@ function SignUp() {
         city: "",
         address: "",
         phoneNumber: "",
-        accountant: "",
       },
     },
   });
@@ -46,9 +46,10 @@ function SignUp() {
         ...prevUser.extraDetails,
         firstName,
         lastName,
+        password,
       },
     }));
-  }, [firstName, lastName]);
+  }, [firstName, lastName, password]);
 
   const updateEssentialDetails = (details) => {
     setNewUser((prevUser) => ({
@@ -133,6 +134,7 @@ function SignUp() {
             updateBusinessDetails={updateBusinessDetails}
             setFirstName={setFirstName}
             setLastName={setLastName}
+            setPassword={setPassword}
           />
         </div>
       </div>

@@ -24,6 +24,9 @@ function SignUpForm(props) {
       props.setFirstName(value);
     } else if (name === "lastName") {
       props.setLastName(value);
+    } else if (name === "password") {
+      console.log("@@@@@ : " + value);
+      props.setPassword(value);
     } else {
       props.updateData({ [name]: value });
     }
@@ -77,7 +80,7 @@ function SignUpForm(props) {
               <ImageUploader onImageUpload={onImageUpload} />
             </FormControl>
             <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>First Name</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>First Name*</FormLabel>
               <Input
                 name="firstName"
                 type="text"
@@ -87,8 +90,9 @@ function SignUpForm(props) {
                 required
               />
             </FormControl>
+
             <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Last Name</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Last Name*</FormLabel>
               <Input
                 name="lastName"
                 type="text"
@@ -98,7 +102,7 @@ function SignUpForm(props) {
               />
             </FormControl>
             <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Email</FormLabel>
+              <FormLabel style={{ fontWeight: "bold" }}>Email*</FormLabel>
               <Input
                 name="email"
                 type="email"
@@ -109,7 +113,7 @@ function SignUpForm(props) {
             </FormControl>
             <FormControl>
               <FormLabel style={{ fontWeight: "bold" }}>
-                Nickname (avatar)
+                Nickname* (avatar)
               </FormLabel>
               <Input
                 name="avatar"
@@ -119,18 +123,18 @@ function SignUpForm(props) {
                 onChange={handleChange}
               />
             </FormControl>
-
-            {/* <FormControl>
-              <FormLabel style={{ fontWeight: "bold" }}>Password</FormLabel>
+            {/* ================================ Password =========================================== */}
+            <FormControl>
+              <FormLabel style={{ fontWeight: "bold" }}>Password*</FormLabel>
               <Input
                 name="password"
-                type="password"
+                type="text"
                 placeholder="Enter your Password"
                 value={props.dataExtra.password}
                 onChange={handleChangeExtra}
+                required
               />
-            </FormControl> */}
-
+            </FormControl>
             <Typography
               endDecorator={<Link href="/login">Log in</Link>}
               fontSize="sm"

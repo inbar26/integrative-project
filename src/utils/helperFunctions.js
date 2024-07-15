@@ -16,4 +16,6 @@ export const myLog = (objectToLog) => {
   console.log(objectToLog);
 };
 
+export const passwordValidation = (password) => {};
+
 export default dummy;

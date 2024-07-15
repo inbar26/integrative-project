@@ -11,6 +11,7 @@ import { Alert } from "antd";
 function Login() {
   const [data, setData] = useState(null); // Define state for storing data
   const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     if (data) {
@@ -33,14 +34,25 @@ function Login() {
           expires: 7,
         }
       );
-
       const currentUser = Cookies.get(`${fetchedData.data.userId.email}`);
-
       console.log("currentUser after cookie (final form): ");
       console.log(currentUser);
+      const userObject = await objectService.getObjectByAlias(currentUser);
+      console.log("userObject:");
+      console.log(userObject);
+      console.log(userObject[0]);
+      console.log(userObject[0].objectDetails);
+      console.log(userObject[0].objectDetails.password);
 
-      window.location.href = `/lobi?email=${fetchedData.data.userId.email}`;
+      if (userObject[0].objectDetails.password !== details.password) {
+        console.log("Incorrect Password");
+        setAlertMessage("Incorrect Password");
+        setShowAlert(true);
+      } else {
+        window.location.href = `/lobi?email=${fetchedData.data.userId.email}`;
+      }
     } catch (error) {
+      setAlertMessage("Something went wrong");
       setShowAlert(true);
       console.error("Error during login attempt:", error);
     }
@@ -60,7 +72,7 @@ function Login() {
           {showAlert && (
             <Alert
               message="Error"
-              description="This email is not registered"
+              description={alertMessage}
               type="error"
               showIcon
               closable

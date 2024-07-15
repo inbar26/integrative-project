@@ -9,12 +9,14 @@ import Typography from "@mui/material/Typography";
 import SignUpForm from "./SignUpForm";
 import BusinessCreateArea from "./BusinessCreateArea";
 import SignUpReview from "./SignUpReview";
+import { Alert } from "antd";
 
 const steps = ["User Details", "Business Details", "Review"];
 
 export default function HorizontalLinearStepper(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+  const [showAlert, setShowAlert] = React.useState(false);
 
   const isStepOptional = (step) => {
     //return step === 1;
@@ -26,14 +28,34 @@ export default function HorizontalLinearStepper(props) {
   };
 
   const handleNext = () => {
+    setShowAlert(false);
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
       newSkipped.delete(activeStep);
     }
-
+    if (activeStep === steps.length - 1) {
+      if (!isValidate()) {
+        setShowAlert(true);
+        return;
+      }
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
+  };
+  const isValidate = () => {
+    const { essentialDetails, extraDetails } = props.newUser;
+    if (
+      !essentialDetails.email ||
+      !essentialDetails.avatar ||
+      !essentialDetails.username ||
+      !extraDetails.password ||
+      !extraDetails.firstName ||
+      !extraDetails.lastName
+    ) {
+      return false;
+    }
+    return true;
   };
 
   const handleBack = () => {
@@ -70,6 +92,7 @@ export default function HorizontalLinearStepper(props) {
             updateDataExtra={props.updateExtraDetails}
             setFirstName={props.setFirstName}
             setLastName={props.setLastName}
+            setPassword={props.setPassword}
           />
         );
       case 1:
@@ -77,6 +100,8 @@ export default function HorizontalLinearStepper(props) {
           <BusinessCreateArea
             data={props.newUser.extraDetails.businessDetails}
             updateData={props.updateBusinessDetails}
+            dataExtra={props.newUser.extraDetails}
+            updateDataExtra={props.updateExtraDetails}
           />
         );
       case 2:
@@ -141,6 +166,15 @@ export default function HorizontalLinearStepper(props) {
             </Button>
           </Box>
         </React.Fragment>
+      )}
+      {showAlert && (
+        <Alert
+          message="Error"
+          description="Please fill all the essential information (*)"
+          type="error"
+          showIcon
+          closable
+        />
       )}
     </Box>
   );
