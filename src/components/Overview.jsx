@@ -14,6 +14,9 @@ import {
 import React, { useState, useEffect } from "react";
 import DateCalendar from "./DateCalendar";
 import { Link } from "react-router-dom";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import {
   ArrowBack,
   AttachMoney,
@@ -30,18 +33,20 @@ const preventDefault = (event) => event.preventDefault();
 function Overview(props) {
   const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
 
-  console.log("currentUser after cookie: ");
-  console.log(currentUser);
+	console.log("currentUser after cookie: ");
+	console.log(currentUser);
+	const [currentUserObject, setCurrentUserObject] = useState({});
+	const [img, setImg] = useState({
+		imageUrl: "",
+		nameInitials: "",
+	});
 
-  const [openTable, setOpenTable] = useState(null);
-  const [img, setImg] = useState({
-    imageUrl: "",
-    nameInitials: "",
-  });
-  const [buttonColor, setButtonColor] = useState({
-    upcomingDebts: "primary",
-    openReceivables: "primary",
-  });
+	{
+		/*const [openTable, setOpenTable] = useState(null);
+	const [buttonColor, setButtonColor] = useState({
+		upcomingDebts: "primary",
+		openReceivables: "primary",
+	});
 
   const handleButtonClick = (table) => {
     setOpenTable(openTable === table ? null : table);
@@ -160,98 +165,99 @@ function Overview(props) {
                 </Paper>
               </Grid>
 
-              <Grid item xs={8} sx={{ marginLeft: 25 }}>
-                {openTable === "upcomingDebts" && (
-                  <Table sx={{ mt: 2 }}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Due Date
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Customer Name
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Amount
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>30/06/2023</TableCell>
-                        <TableCell>Customer 1</TableCell>
-                        <TableCell>$2,211.30</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>30/06/2023</TableCell>
-                        <TableCell>Customer 2</TableCell>
-                        <TableCell>$336.96</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                )}
-              </Grid>
-              <Grid item xs={8}>
-                {openTable === "openReceivables" && (
-                  <Table sx={{ mt: 2 }}>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Invoice Date
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Customer Name
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
-                          Amount
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>01/07/2023</TableCell>
-                        <TableCell>Customer 3</TableCell>
-                        <TableCell>$1,000.00</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>01/07/2023</TableCell>
-                        <TableCell>Customer 4</TableCell>
-                        <TableCell>$500.00</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                )}
-              </Grid>
-            </Box>
-          </Box>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <Box
-              sx={{
-                border: "4px solid #ddd",
-                padding: 1,
-                borderRadius: 2,
-                marginTop: 5,
-                width: "40%",
-                marginRight: "50px",
-              }}
-            >
-              <img
-                src="src/assets/ExchangeRates.png"
-                alt="Your Image"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "50%",
-                  display: "block",
-                  margin: "auto",
-                  marginTop: "20px",
-                  borderRadius: "10px",
-                }}
-              />
+							<Grid item xs={8} sx={{ marginLeft: 25 }}>
+								{openTable === "upcomingDebts" && (
+									<Table sx={{ mt: 2 }}>
+										<TableHead>
+											<TableRow>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Due Date
+												</TableCell>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Customer Name
+												</TableCell>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Amount
+												</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											<TableRow>
+												<TableCell>30/06/2023</TableCell>
+												<TableCell>Customer 1</TableCell>
+												<TableCell>$2,211.30</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>30/06/2023</TableCell>
+												<TableCell>Customer 2</TableCell>
+												<TableCell>$336.96</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								)}
+							</Grid>
+							<Grid item xs={8}>
+								{openTable === "openReceivables" && (
+									<Table sx={{ mt: 2 }}>
+										<TableHead>
+											<TableRow>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Invoice Date
+												</TableCell>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Customer Name
+												</TableCell>
+												<TableCell sx={{ fontWeight: "bold", fontSize: 18 }}>
+													Amount
+												</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											<TableRow>
+												<TableCell>01/07/2023</TableCell>
+												<TableCell>Customer 3</TableCell>
+												<TableCell>$1,000.00</TableCell>
+											</TableRow>
+											<TableRow>
+												<TableCell>01/07/2023</TableCell>
+												<TableCell>Customer 4</TableCell>
+												<TableCell>$500.00</TableCell>
+											</TableRow>
+										</TableBody>
+									</Table>
+								)}
+							</Grid>
+						</Box>
+							*/}
+					</Box>
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "row",
+						}}
+					>
+						<Box
+							sx={{
+								border: "4px solid #ddd",
+								padding: 1,
+								borderRadius: 2,
+								marginTop: 5,
+								width: "40%",
+								marginRight: "50px",
+							}}
+						>
+							<img
+								src="src/assets/ExchangeRates.png"
+								alt="Your Image"
+								style={{
+									maxWidth: "100%",
+									maxHeight: "50%",
+									display: "block",
+									margin: "auto",
+									marginTop: "20px",
+									borderRadius: "10px",
+								}}
+							/>
 
               <Typography
                 variant="h6"

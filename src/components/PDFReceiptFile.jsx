@@ -171,6 +171,8 @@ const PDFReceiptFile = (props) => {
 										FINRIZE - Rise to financial Success
 									</Text>
 									<Text style={styles.text}>Tel-Aviv, Mivtsa kadesh 38 St</Text>
+									<Text style={styles.text}>Email: finrize@gmail.com</Text>
+									<Text style={styles.text}>Phone: +972 50-8900123</Text>
 								</View>
 								<View style={styles.headerRight}>
 									<Text style={styles.text}>
