@@ -17,45 +17,50 @@ const CustomerPreview = () => {
   const [loading, setLoading] = useState(true);
   const currentUser = JSON.parse(Cookies.get(userEmail));
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const userObject = await objectService.getObjectByAlias(currentUser);
-        console.log("userObject:");
-        console.log(userObject);
+  const commandAttributes = {
+    commandType: constants.COMMAND_NAME.CUSTOMER_FORMS,
+    customerAlias: customerAlias,
+  };
 
-        const commandDetails = {
-          type: constants.CLASS_TYPE.FORM,
-          //userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
-          customer: customerAlias,
-          page: 0,
-          size: 5,
-        };
+  // useEffect(() => {
+  //   const fetchCustomers = async () => {
+  //     try {
+  //       const userObject = await objectService.getObjectByAlias(currentUser);
+  //       console.log("userObject:");
+  //       console.log(userObject);
 
-        const forms = await commandService.invokeCommand(
-          constants.APP_NAME,
-          constants.COMMAND_NAME.CUSTOMER_FORMS,
-          currentUser,
-          userObject[0].objectId.id,
-          commandDetails
-        );
+  //       const commandDetails = {
+  //         type: constants.CLASS_TYPE.FORM,
+  //         userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
+  //         customer: customerAlias,
+  //         page: 0,
+  //         size: 5,
+  //       };
 
-        console.log("formsObjectArray:");
-        console.log(forms);
-        setFormObjectArray(forms);
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const forms = await commandService.invokeCommand(
+  //         constants.APP_NAME,
+  //         constants.COMMAND_NAME.CUSTOMER_FORMS,
+  //         currentUser,
+  //         userObject[0].objectId.id,
+  //         commandDetails
+  //       );
 
-    fetchCustomers();
-  }, []); // Effect will run whenever currentUser changes
+  //       console.log("formsObjectArray:");
+  //       console.log(forms);
+  //       setFormObjectArray(forms);
+  //     } catch (error) {
+  //       console.error("Error fetching customers:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  //   fetchCustomers();
+  // }, []); // Effect will run whenever currentUser changes
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
   return (
     <LayoutComponent>
       <div
@@ -83,7 +88,10 @@ const CustomerPreview = () => {
         Forms: <hr />
       </h2>
       <br />
-      <CustomizedTables formArray={formObjectArray} />
+      <CustomizedTables
+        commandAttributes={commandAttributes}
+        userEmail={userEmail}
+      />
     </LayoutComponent>
   );
 };

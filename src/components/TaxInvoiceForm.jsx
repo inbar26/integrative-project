@@ -64,7 +64,7 @@ const TaxInvoiceForm = (props) => {
     updateFormDetails({ [name]: value });
   };
   const handleCustomerChange = (event, newValue) => {
-    updateFormDetails({ customer: newValue.label });
+    updateFormDetails({ customer: newValue });
   };
   //------------------------------------------------------------ Product Details:
   const [newProduct, setNewProduct] = useState({
@@ -181,10 +181,9 @@ const TaxInvoiceForm = (props) => {
 
   const getCustomerNames = () => {
     const customerNames = [];
+
     customerObjectArray.map((customerObject) =>
-      customerNames.push({
-        label: customerObject.alias,
-      })
+      customerNames.push(customerObject.alias)
     );
     return customerNames;
   };
@@ -230,22 +229,12 @@ const TaxInvoiceForm = (props) => {
               disablePortal
               id="combo-box-demo"
               options={customerNames}
-              isOptionEqualToValue={(option, value) =>
-                option.label === value?.label
-              }
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
                 <TextField {...params} label="Customer" />
               )}
             />
-            {/* <TextField
-              required
-              label="Customer Name"
-              fullWidth
-              className="custom-input"
-              name="customer"
-              value={newTaxInvoice.customer}
-              onChange={handleChangeTaxDetails}
-            /> */}
           </Grid>
 
           <Grid item xs={10} sm={10}>
@@ -437,8 +426,7 @@ const TaxInvoiceForm = (props) => {
                   }
                 >
                   <ListItemDecorator>
-                    {" "}
-                    <ReceiptLongOutlinedIcon />
+                    <ReceiptLongOutlinedIcon />{" "}
                     {` ${product.name}: ${Number(
                       product.quantity
                     )} (Quantity), ${Number(product.unitPrice)} (Unit Price) `}

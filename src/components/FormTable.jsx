@@ -281,14 +281,15 @@ export default function CustomizedTables(props) {
         const commandDetails = {
           type: constants.CLASS_TYPE.FORM,
           userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
-          page: page,
+          customer: props.commandAttributes.customerAlias,
+          page: page - 1,
           size: 5,
         };
         console.log("Page Number:");
         console.log(page);
         const forms = await commandService.invokeCommand(
           constants.APP_NAME,
-          constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
+          props.commandAttributes.commandType,
           currentUser,
           userObject[0].objectId.id,
           commandDetails

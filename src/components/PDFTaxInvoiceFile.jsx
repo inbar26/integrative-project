@@ -187,7 +187,7 @@ const PDFTaxInvoiceFile = (props) => {
                 </View>
                 <View style={styles.titleDate}>
                   <Text>
-                    Production Date: {props.formObject.creationTimestamp}
+                    Production Date: {props.formObject.objectDetails.createDate}
                   </Text>
                   {/* HERE WE NEED TO ENTER THE REAL DETAILS */}
                 </View>

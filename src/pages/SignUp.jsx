@@ -30,6 +30,7 @@ function SignUp() {
         city: "",
         address: "",
         phoneNumber: "",
+        accountant: "",
       },
     },
   });
@@ -101,6 +102,13 @@ function SignUp() {
       console.log("Response ExtraDetails:");
       console.log(responseDataExtra);
 
+      Cookies.set(
+        `${responseDataEssential.userId.email}`,
+        JSON.stringify(responseDataEssential),
+        {
+          expires: 7,
+        }
+      );
       window.location.href = `/lobi?email=${responseDataEssential.userId.email}`;
     } catch (error) {
       console.error("Error during sign-up attempt:", error);

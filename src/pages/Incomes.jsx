@@ -2,10 +2,17 @@ import React from "react";
 import LayoutComponent from "../components/LayoutComponent";
 import FormTable from "../components/FormTable";
 import { useLocation } from "react-router-dom";
+import * as constants from "../utils/constants";
 const Incomes = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userEmail = queryParams.get("email");
+
+  const commandAttributes = {
+    commandType: constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
+    customerAlias: null,
+  };
+
   return (
     <LayoutComponent>
       <div
@@ -29,7 +36,7 @@ const Incomes = () => {
           All Forms:
         </h1>
       </div>
-      <FormTable userEmail={userEmail} />
+      <FormTable commandAttributes={commandAttributes} userEmail={userEmail} />
     </LayoutComponent>
   );
 };

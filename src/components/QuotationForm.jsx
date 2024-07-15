@@ -9,36 +9,41 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import { Alert } from "antd";
 import "../styles/inputFix.css";
 import ButtonPreview from "./ButtonPreview";
 import Radio from "@mui/joy/Radio";
-import * as constants from "../utils/constants";
 import RadioGroup from "@mui/joy/RadioGroup";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import Delete from "@mui/icons-material/Delete";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
-
+import Autocomplete from "@mui/material/Autocomplete";
+import * as objectService from "../services/objectService";
+import * as commandService from "../services/commandService";
+import * as constants from "../utils/constants";
 import Cookies from "js-cookie";
+import { DatePicker } from "antd";
+import * as helper from "../utils/helperFunctions";
 
 const QuotationForm = (props) => {
   const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
 
   console.log("currentUser after cookie: ");
   console.log(currentUser);
-  const [errorList, setError1] = useState("");
+  const [errorList, setErrorList] = useState("");
   const [errorSubmit, setErrorSubmit] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [inputCustomer, setInputCustomer] = useState("");
 
   //------------------------------------------------------------ Tax Details:
   const [newQuotation, setNewQuotation] = useState({
-    customerName: "",
-    createDate: null,
+    customer: "",
+    createDate: "",
+    isOpen: false,
     documentDescription: "",
     productArray: [],
     notes: "",
@@ -53,6 +58,9 @@ const QuotationForm = (props) => {
   const handleChangeQuotationDetails = (event) => {
     const { name, value } = event.target;
     updateFormDetails({ [name]: value });
+  };
+  const handleCustomerChange = (event, newValue) => {
+    updateFormDetails({ customer: newValue });
   };
   //------------------------------------------------------------ Product Details:
   const [newProduct, setNewProduct] = useState({
@@ -75,7 +83,7 @@ const QuotationForm = (props) => {
   };
   const onAddProduct = () => {
     if (!newProduct.name || !newProduct.quantity || !newProduct.unitPrice) {
-      setError1("Please fill out all product fields");
+      setErrorList("Please fill out all product fields");
       return;
     }
     setErrorList("");
@@ -96,25 +104,89 @@ const QuotationForm = (props) => {
       productArray: prevState.productArray.filter((_, i) => i !== index),
     }));
   };
+  const handleDateChange = (date, dateString) => {
+    updateFormDetails({ paymentDueDate: dateString });
+  };
   //--------------------------------------------------------------------
+  const [customerObjectArray, setCustomerObjectArray] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     console.log("Product Array:", newQuotation.productArray);
   }, [newQuotation.productArray]);
 
-  const handleSubmit = () => {
-    //taxInvoiceArray.push(newTaxInvoice);
+  const handleSubmit = async () => {
     if (validateForm()) {
       setShowAlert(true); // Show the alert on form submission
       setErrorSubmit("");
+      const currDate = helper.myGetCurrDate();
+      newQuotation.createDate = currDate;
+      await objectService.storeObjectInDataBase(
+        currentUser,
+        constants.CLASS_TYPE.FORM,
+        constants.FORM_TYPE.QUOTE,
+        newQuotation
+      );
+      //Reset NewTaxInvoice fields:
+      setNewQuotation({
+        customer: "",
+        createDate: "",
+        isOpen: false,
+        documentDescription: "",
+        productArray: [],
+        notes: "",
+      });
     } else {
       setErrorSubmit("Please fill out all required fields.");
+      console.log("cannot submit");
     }
   };
 
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        const userObject = await objectService.getObjectByAlias(currentUser);
+        console.log("userObject:");
+        console.log(userObject);
+
+        const commandDetails = {
+          type: constants.CLASS_TYPE.CUSTOMER,
+          userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
+          page: 0,
+          size: 200,
+        };
+        const customers = await commandService.invokeCommand(
+          constants.APP_NAME,
+          constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
+          currentUser,
+          userObject[0].objectId.id,
+          commandDetails
+        );
+
+        console.log("customerObjectArray:");
+        console.log(customers);
+        setCustomerObjectArray(customers);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+
+  const getCustomerNames = () => {
+    const customerNames = [];
+
+    customerObjectArray.map((customerObject) =>
+      customerNames.push(customerObject.alias)
+    );
+    return customerNames;
+  };
   const validateForm = () => {
-    const { customerName, createDate, productArray } = newQuotation;
-    if (!customerName || !createDate || productArray.length === 0) {
+    const { customer, productArray } = newQuotation;
+    if (!customer || productArray.length === 0) {
       return false;
     }
     return true;
@@ -123,6 +195,7 @@ const QuotationForm = (props) => {
   console.log(newQuotation);
   console.log(newProduct);
 
+  const customerNames = getCustomerNames();
   return (
     <>
       <Box
@@ -139,32 +212,30 @@ const QuotationForm = (props) => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <TextField
+            <Autocomplete
               required
-              label="Customer Name"
-              fullWidth
-              className="custom-input"
-              name="customerName"
-              value={newQuotation.customerName}
-              onChange={handleChangeQuotationDetails}
-            />
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <DatePicker
-              label="Document Date"
-              className="custom-input"
-              name="createDate" //add
-              value={newQuotation.createDate} //add
-              onChange={handleChangeQuotationDetails} //add
+              name="customer"
+              value={newQuotation.customer}
+              inputValue={inputCustomer}
+              onInputChange={(event, newInputValue) =>
+                setInputCustomer(newInputValue)
+              }
+              onChange={handleCustomerChange}
+              disablePortal
+              id="combo-box-demo"
+              options={customerNames}
+              isOptionEqualToValue={(option, value) => option === value}
+              getOptionLabel={(option) => option}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  fullWidth
-                  className="custom-input"
-                  InputProps={{ endAdornment: <SearchIcon /> }}
-                />
+                <TextField {...params} label="Customer" />
               )}
             />
+          </Grid>
+          <Grid item xs={10} sm={10}>
+            <Typography variant="body2" gutterBottom>
+              Payment due Date:
+            </Typography>
+            <DatePicker onChange={handleDateChange} />
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -382,7 +453,7 @@ const QuotationForm = (props) => {
               className="custom-input"
               name="notes"
               value={newQuotation.notes}
-              onChange={handleChangeProductDetails}
+              onChange={handleChangeQuotationDetails}
             />
           </Grid>
         </Grid>

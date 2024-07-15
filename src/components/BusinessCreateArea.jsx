@@ -12,6 +12,56 @@ import Snackbar from "@mui/material/Snackbar";
 */
 
 function BusinessCreateArea(props) {
+  const [inputCustomer, setInputCustomer] = useState("");
+  const [customerObjectArray, setCustomerObjectArray] = useState([]);
+  const getCustomerNames = () => {
+    const customerNames = [];
+
+    customerObjectArray.map((customerObject) =>
+      customerNames.push(customerObject.alias)
+    );
+    return customerNames;
+  };
+  const customerNames = getCustomerNames();
+
+  useEffect(() => {
+    const fetchCustomers = async () => {
+      try {
+        // const userObject = await objectService.getObjectByAlias(currentUser);
+        // console.log("userObject:");
+        // console.log(userObject);
+
+        // const commandDetails = {
+        //   type: constants.CLASS_TYPE.CUSTOMER,
+        //   userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
+        //   page: 0,
+        //   size: 200,
+        // };
+        const customers = await commandService.invokeCommand(
+          constants.APP_NAME,
+          constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
+          currentUser,
+          userObject[0].objectId.id,
+          commandDetails
+        );
+
+        console.log("customerObjectArray:");
+        console.log(customers);
+        setCustomerObjectArray(customers);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCustomers();
+  }, []);
+  //-----------------------------------------------------------
+  const handleCustomerChange = (event, newValue) => {
+    updateFormDetails({ accountant: newValue });
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     props.updateData({ [name]: value });
@@ -75,6 +125,23 @@ function BusinessCreateArea(props) {
             value={props.data.name}
             onChange={handleChange}
             required
+          />
+          <label htmlFor="accountant">Accountant Email:</label>
+          <Autocomplete
+            required
+            name="accountant"
+            value={props.data.accountant}
+            inputValue={inputCustomer}
+            onInputChange={(event, newInputValue) =>
+              setInputCustomer(newInputValue)
+            }
+            onChange={handleCustomerChange}
+            disablePortal
+            id="combo-box-demo"
+            options={customerNames}
+            isOptionEqualToValue={(option, value) => option === value}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => <TextField {...params} label="Customer" />}
           />
           <label htmlFor="city">City:</label>
           <input
