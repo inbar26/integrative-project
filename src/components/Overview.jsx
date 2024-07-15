@@ -79,7 +79,7 @@ function Overview(props) {
 					alt="Avatar"
 					sx={{ width: 100, height: 100, marginRight: "10px" }}
 				/>
-				*/}
+
 				<Box sx={{ width: "80%", maxWidth: 600 }}>
 					<Typography variant="h5" marginTop={2} marginLeft={2}>
 						{`Hello ${currentUser.username}`}
