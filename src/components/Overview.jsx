@@ -24,6 +24,7 @@ import {
 import Cookies from "js-cookie";
 import * as objectService from "../services/objectService";
 import * as constants from "../utils/constants";
+
 const preventDefault = (event) => event.preventDefault();
 
 function Overview(props) {
