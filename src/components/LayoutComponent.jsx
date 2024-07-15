@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeftOutlined,
@@ -9,13 +9,21 @@ import {
 import { Layout, Menu } from "antd";
 import { useLocation } from "react-router-dom";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
-
+import { IconButton } from "@mui/material";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 const { Header, Content, Sider } = Layout;
 
 const LayoutComponent = ({ children }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const userEmail = queryParams.get("email");
+  const [darkMode, setDarkMode] = useState(false);
+
+  const handleModeClick = () => {
+    setDarkMode(!darkMode);
+  };
+
   const siderMenuItems = [
     {
       key: "sub1",
@@ -27,6 +35,7 @@ const LayoutComponent = ({ children }) => {
           label: "Overview",
           linkTo: `/lobi?email=${userEmail}`,
         }, // Add linkTo for Overview
+
         { key: "3", label: "Incomes", linkTo: `/Incomes?email=${userEmail}` },
         {
           key: "4",
@@ -82,9 +91,15 @@ const LayoutComponent = ({ children }) => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header className="header">
+      <Header
+        style={{
+          backgroundColor: darkMode ? "#001529" : "#FFFFFF",
+          boxShadow: "8px 5px 10px 5px rgba(0, 0, 0, 0.2)",
+          zIndex: 2,
+        }}
+      >
         <Menu
-          theme="dark"
+          theme={darkMode ? "dark" : "light"}
           mode="horizontal"
           defaultSelectedKeys={["1"]}
           style={{ lineHeight: "64px" }}
@@ -94,11 +109,28 @@ const LayoutComponent = ({ children }) => {
               <ArrowLeftOutlined /> Back
             </Link>
           </Menu.Item>
+
+          <IconButton onClick={handleModeClick} style={{ marginLeft: "auto" }}>
+            {darkMode ? (
+              <LightModeOutlinedIcon style={{ color: "#FFFFFF" }} />
+            ) : (
+              <DarkModeOutlinedIcon color="action" />
+            )}
+          </IconButton>
         </Menu>
       </Header>
       <Layout>
-        <Sider width={300} style={{ background: "#fff" }}>
+        <Sider
+          width={300}
+          style={{
+            background: "#fff",
+
+            boxShadow: "10px 15px 15px 10px rgba(0, 0, 0, 0.2)",
+            zIndex: 1,
+          }}
+        >
           <Menu
+            theme={darkMode ? "dark" : "light"}
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
@@ -122,7 +154,7 @@ const LayoutComponent = ({ children }) => {
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content
             style={{
-              background: "#fff",
+              backgroundColor: darkMode ? "#FAFBFB" : "#FAFBFB",
               padding: 24,
               margin: 0,
               minHeight: 280,

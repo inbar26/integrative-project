@@ -14,7 +14,11 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import MyPagination from "../components/UsePagination.jsx";
+import { Pagination } from "antd";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import { AlignVerticalCenter } from "@mui/icons-material";
 /*
   This component is a Table for the CUSTOMER LIST display
 */
@@ -23,6 +27,7 @@ export default function BasicTable(props) {
   const [customerObjectArray, setCustomerObjectArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(50);
   const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
 
   useEffect(() => {
@@ -35,7 +40,7 @@ export default function BasicTable(props) {
         const commandDetails = {
           type: constants.CLASS_TYPE.CUSTOMER,
           userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
-          page: page,
+          page: page - 1,
           size: 2,
         };
         console.log("Page Number:");
@@ -60,14 +65,20 @@ export default function BasicTable(props) {
     };
 
     fetchCustomers();
-  }, [page]); // Effect will run whenever currentUser changes
+  }, [page]); // Effect will run whenever Page changes
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box>
+        <Skeleton />
+        <Skeleton animation="wave" />
+        <Skeleton animation="wave" />
+      </Box>
+    );
   }
 
   return (
@@ -76,7 +87,7 @@ export default function BasicTable(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Full Name</TableCell>
+              <TableCell align="right">Full Name</TableCell>
               <TableCell align="right">Address</TableCell>
               <TableCell align="right">Phone Number</TableCell>
               <TableCell align="right">Email</TableCell>
@@ -91,7 +102,7 @@ export default function BasicTable(props) {
                   key={customer.alias}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" align="right">
                     {`${customer.alias}`}
                   </TableCell>
                   <TableCell align="right">
@@ -128,7 +139,13 @@ export default function BasicTable(props) {
           </TableBody>
         </Table>
       </TableContainer>
-      <MyPagination page={page} onPageChange={handlePageChange} />
+      <Pagination
+        align="center"
+        current={page}
+        onChange={handlePageChange}
+        defaultCurrent={1}
+        total={total}
+      />
     </>
   );
 }

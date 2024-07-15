@@ -6,8 +6,11 @@ import * as userService from "../services/userService";
 import * as objectService from "../services/objectService";
 import * as constants from "../utils/constants";
 import Cookies from "js-cookie";
+import { Alert } from "antd";
+
 function Login() {
   const [data, setData] = useState(null); // Define state for storing data
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -16,13 +19,13 @@ function Login() {
   }, [data]);
 
   const loginAttempt = async (details) => {
-    console.log("login Attempt");
     try {
+      console.log("login Attempt");
       // get user
+      setShowAlert(false);
       const fetchedData = await userService.fetchData(details.email);
       console.log("fetchedData: ");
       console.log(fetchedData);
-
       Cookies.set(
         `${fetchedData.data.userId.email}`,
         JSON.stringify(fetchedData.data),
@@ -38,6 +41,7 @@ function Login() {
 
       window.location.href = `/lobi?email=${fetchedData.data.userId.email}`;
     } catch (error) {
+      setShowAlert(true);
       console.error("Error during login attempt:", error);
     }
   };
@@ -52,13 +56,18 @@ function Login() {
 
         <div className={styles.loginForm}>
           <LoginFinal onLoginAttempt={loginAttempt} />
+
+          {showAlert && (
+            <Alert
+              message="Error"
+              description="This email is not registered"
+              type="error"
+              showIcon
+              closable
+            />
+          )}
         </div>
       </div>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>No data fetched yet</p>
-      )}
     </>
   );
 }

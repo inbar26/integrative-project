@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -16,11 +17,17 @@ import PDFDeliveryNoteFile from "../components/PDFDeliveryNoteFile";
 import IconButton from "@mui/material/IconButton";
 import Chip from "@mui/joy/Chip";
 import * as constants from "../utils/constants";
-import * as cus from "../../data/customers";
+import * as objectService from "../services/objectService";
+import * as userService from "../services/userService";
+import * as commandService from "../services/commandService";
+import * as helper from "../utils/helperFunctions";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import Cookies from "js-cookie";
+import { Pagination } from "antd";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
 
 /*
   This component is a Table for the Form List display
@@ -258,48 +265,116 @@ const renderFormAction = (form) => {
 };
 
 export default function CustomizedTables(props) {
-  /*
-    make a get request for customer (Get Customer-Object By Email)
-  */
+  const [formObjectArray, setFormObjectArray] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(50);
+  const currentUser = JSON.parse(Cookies.get(props.userEmail));
 
-  /*
-    make a get request for all the forms (Get All Form-Objects By Customer)
-  */
+  useEffect(() => {
+    setLoading(true);
+    const fetchForms = async () => {
+      try {
+        const userObject = await objectService.getObjectByAlias(currentUser);
+        helper.myLog(userObject);
+
+        const commandDetails = {
+          type: constants.CLASS_TYPE.FORM,
+          userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
+          page: page,
+          size: 5,
+        };
+        console.log("Page Number:");
+        console.log(page);
+        const forms = await commandService.invokeCommand(
+          constants.APP_NAME,
+          constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
+          currentUser,
+          userObject[0].objectId.id,
+          commandDetails
+        );
+
+        console.log("formArray:");
+        console.log(forms);
+        setFormObjectArray([]);
+        setFormObjectArray(forms);
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchForms();
+  }, [page]);
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  if (loading) {
+    return (
+      <Box>
+        <Skeleton />
+        <Skeleton animation="wave" />
+        <Skeleton animation="wave" />
+        <Skeleton animation="wave" />
+        <Skeleton animation="wave" />
+      </Box>
+    );
+  }
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Form Type</StyledTableCell>
-            <StyledTableCell align="center">Date Modified</StyledTableCell>
-            <StyledTableCell align="center">Customer</StyledTableCell>
-            <StyledTableCell align="center">Open/Close</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {/* Reaplace cus.customers1[0] To Data.forms */}
-          {props.formArray.map((form) => (
-            <StyledTableRow key={form.objectId.id}>
-              {renderFormType(form.alias)}
-              <StyledTableCell align="center">
-                {form.creationTimestamp}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {form.objectDetails.customer}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                {form.objectDetails.isOpen ? (
-                  <LockOpenOutlinedIcon />
-                ) : (
-                  <LockOutlinedIcon />
-                )}
-              </StyledTableCell>
-              {renderFormAction(form)}
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell align="center">Form Type</StyledTableCell>
+              <StyledTableCell align="center">Date Modified</StyledTableCell>
+              <StyledTableCell align="center">Customer</StyledTableCell>
+              <StyledTableCell align="center">Open/Close</StyledTableCell>
+              <StyledTableCell align="center"></StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {/* Reaplace cus.customers1[0] To Data.forms */}
+            {Array.isArray(formObjectArray) && formObjectArray.length > 0 ? (
+              formObjectArray.map((formObject) => (
+                <StyledTableRow key={formObject.objectId.id}>
+                  {renderFormType(formObject.alias)}
+                  <StyledTableCell align="center">
+                    {formObject.objectDetails.createDate}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {formObject.objectDetails.customer}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {formObject.objectDetails.isOpen ? (
+                      <LockOpenOutlinedIcon />
+                    ) : (
+                      <LockOutlinedIcon />
+                    )}
+                  </StyledTableCell>
+                  {renderFormAction(formObject)}
+                </StyledTableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} align="center">
+                  No Forms found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <Pagination
+          align="center"
+          current={page}
+          onChange={handlePageChange}
+          defaultCurrent={1}
+          total={total}
+        />
+      </TableContainer>
+    </>
   );
 }

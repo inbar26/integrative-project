@@ -24,6 +24,7 @@ import {
 import Cookies from "js-cookie";
 import * as objectService from "../services/objectService";
 import * as constants from "../utils/constants";
+
 const preventDefault = (event) => event.preventDefault();
 
 function Overview(props) {
@@ -33,7 +34,10 @@ function Overview(props) {
 	console.log(currentUser);
 
 	const [openTable, setOpenTable] = useState(null);
-	const [img, setImg] = useState(null);
+	const [img, setImg] = useState({
+		imageUrl: "",
+		nameInitials: "",
+	});
 	const [buttonColor, setButtonColor] = useState({
 		upcomingDebts: "primary",
 		openReceivables: "primary",
@@ -54,7 +58,11 @@ function Overview(props) {
 				console.log("userObject:");
 				console.log(userObject);
 
-				setImg(userObject[0].objectDetails.profileImageUrl);
+				setImg({
+					imageUrl: userObject[0].objectDetails.profileImageUrl,
+					nameInitials: userObject[0].objectDetails.firstName,
+				});
+
 				return userObject;
 			} catch (error) {
 				console.error("Error fetching customers:", error);
@@ -63,7 +71,7 @@ function Overview(props) {
 		const userExtraDetails = fetchCurrentUser();
 		console.log("userExtraDetails:");
 		console.log(userExtraDetails);
-	}, [img]);
+	}, [img.imageUrl]);
 
 	return (
 		<>
@@ -74,9 +82,10 @@ function Overview(props) {
 					marginTop: "15px",
 				}}
 			>
+				{console.log("imaggeeee: " + img.imageUrl)}
 				<Avatar
-					src={img}
-					alt="Avatar"
+					src={img.imageUrl}
+					alt={img.nameInitials}
 					sx={{ width: 100, height: 100, marginRight: "10px" }}
 				/>
 
