@@ -24,6 +24,7 @@ export const CLASS_TYPE = {
   USER_DATA: "UserData",
   FORM: "Form",
   CUSTOMER: "Customer",
+  ACCOUNTANT: "Accountant",
 };
 export const COMMAND_NAME = {
   ALL_OBJECTS_BY_TYPE_AND_CREATED_BY: "GetAllObjectsByTypeAndUserIdCommand",

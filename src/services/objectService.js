@@ -47,10 +47,10 @@ export const putObject = async (object) => {
 };
 
 /* GET Objects By Type [Array]*/
-export const getObjectByType = async (user) => {
+export const getObjectByType = async (user, type) => {
   try {
     const response = await axios.get(
-      `${constants.BASE_URL}/superapp/objects/search/byType/${constants.CLASS_TYPE.CUSTOMER}?userSuperapp=${user.userId.superapp}&userEmail=${user.userId.email}`
+      `${constants.BASE_URL}/superapp/objects/search/byType/${type}?userSuperapp=${user.userId.superapp}&userEmail=${user.userId.email}`
     );
     return response.data;
   } catch (error) {
