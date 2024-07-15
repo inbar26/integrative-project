@@ -228,8 +228,8 @@ function Overview(props) {
 								)}
 							</Grid>
 						</Box>
-							*/}
-					</Box>
+						</Box>
+					*/}
 					<div
 						style={{
 							display: "flex",
