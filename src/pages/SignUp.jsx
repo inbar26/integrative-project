@@ -100,6 +100,8 @@ function SignUp() {
       );
       console.log("Response ExtraDetails:");
       console.log(responseDataExtra);
+
+      window.location.href = `/lobi?email=${responseDataEssential.userId.email}`;
     } catch (error) {
       console.error("Error during sign-up attempt:", error);
     }

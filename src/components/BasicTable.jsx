@@ -17,6 +17,8 @@ import Cookies from "js-cookie";
 import { Pagination } from "antd";
 import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
+import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import { AlignVerticalCenter } from "@mui/icons-material";
 /*
   This component is a Table for the CUSTOMER LIST display
 */
@@ -85,7 +87,7 @@ export default function BasicTable(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Full Name</TableCell>
+              <TableCell align="right">Full Name</TableCell>
               <TableCell align="right">Address</TableCell>
               <TableCell align="right">Phone Number</TableCell>
               <TableCell align="right">Email</TableCell>
@@ -100,7 +102,7 @@ export default function BasicTable(props) {
                   key={customer.alias}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" align="right">
                     {`${customer.alias}`}
                   </TableCell>
                   <TableCell align="right">

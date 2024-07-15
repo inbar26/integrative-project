@@ -38,8 +38,8 @@ export default function AccordionExpand(props) {
             <hr />
             <ListItem>
               <ListItemText
-                primary={`User Name: ${props.data.essentialDetails.userName}`}
-                secondary={`(first: ${props.data.extraDetails.firstName} last: ${props.data.extraDetails.lastName})`}
+                primary={`User Name: ${props.data.essentialDetails.username}`}
+                secondary={`(First Name: ${props.data.extraDetails.firstName}, Last Name: ${props.data.extraDetails.lastName})`}
               />
             </ListItem>
             <ListItem>

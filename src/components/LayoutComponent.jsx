@@ -91,7 +91,13 @@ const LayoutComponent = ({ children }) => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <Header style={{ backgroundColor: darkMode ? "#001529" : "#FFFFFF" }}>
+      <Header
+        style={{
+          backgroundColor: darkMode ? "#001529" : "#FFFFFF",
+          boxShadow: "8px 5px 10px 5px rgba(0, 0, 0, 0.2)",
+          zIndex: 2,
+        }}
+      >
         <Menu
           theme={darkMode ? "dark" : "light"}
           mode="horizontal"
@@ -114,7 +120,15 @@ const LayoutComponent = ({ children }) => {
         </Menu>
       </Header>
       <Layout>
-        <Sider width={300} style={{ background: "#fff" }}>
+        <Sider
+          width={300}
+          style={{
+            background: "#fff",
+
+            boxShadow: "10px 15px 15px 10px rgba(0, 0, 0, 0.2)",
+            zIndex: 1,
+          }}
+        >
           <Menu
             theme={darkMode ? "dark" : "light"}
             mode="inline"
@@ -140,7 +154,7 @@ const LayoutComponent = ({ children }) => {
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content
             style={{
-              background: "#fff",
+              backgroundColor: darkMode ? "#FAFBFB" : "#FAFBFB",
               padding: 24,
               margin: 0,
               minHeight: 280,
