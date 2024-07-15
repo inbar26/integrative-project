@@ -169,10 +169,12 @@ const PDFDeliveryNoteFile = (props) => {
 										FINRIZE - Rise to financial Success
 									</Text>
 									<Text style={styles.text}>Tel-Aviv, Mivtsa kadesh 38 St</Text>
+									<Text style={styles.text}>Email: finrize@gmail.com</Text>
+									<Text style={styles.text}>Phone: +972 50-8900123</Text>
 								</View>
 								<View style={styles.headerRight}>
 									<Text style={styles.text}>
-										To: {props.deliveryNote.customerName}
+										To: {props.formObject.objectDetails.customer}
 									</Text>
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
@@ -183,20 +185,16 @@ const PDFDeliveryNoteFile = (props) => {
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
 								<View style={styles.titleDate}>
-									<Text>Production Date: {props.deliveryNote.createDate} </Text>
+									<Text>
+										Production Date: {props.formObject.objectDetails.createDate}
+									</Text>
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
 							</View>
-							<View style={styles.title}>
-								<View style={styles.text}>
-									<Text>
-										{" "}
-										Payment Due Date: {props.deliveryNote.paymentDueDate}
-									</Text>
-								</View>
-							</View>
+
 							<Text style={styles.textDescription}>
-								Document Description: {props.deliveryNote.documentDescription}
+								Document Description:{" "}
+								{props.formObject.objectDetails.documentDescription}
 							</Text>
 
 							<View style={styles.table}>
@@ -223,23 +221,28 @@ const PDFDeliveryNoteFile = (props) => {
 								<View style={styles.tableRow}>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.deliveryNote.productArray[0].name}
+											{props.formObject.objectDetails.productArray[0].name}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.deliveryNote.productArray[0].quantity}
+											{props.formObject.objectDetails.productArray[0].quantity}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.deliveryNote.productArray[0].unitPrice}
+											{props.formObject.objectDetails.productArray[0].unitPrice}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{Number(props.deliveryNote.productArray[0].unitPrice) *
-												Number(props.deliveryNote.productArray[0].quantity)}
+											{Number(
+												props.formObject.objectDetails.productArray[0].unitPrice
+											) *
+												Number(
+													props.formObject.objectDetails.productArray[0]
+														.quantity
+												)}
 										</Text>
 									</View>
 								</View>
@@ -248,7 +251,7 @@ const PDFDeliveryNoteFile = (props) => {
 							<View style={styles.title}>
 								<View style={styles.textNotes}>
 									<Text>Notes:</Text>
-									<Text> {props.deliveryNote.notes}</Text>
+									<Text> {props.formObject.objectDetails.notes}</Text>
 								</View>
 
 								<View style={styles.textDigitalSignature}>

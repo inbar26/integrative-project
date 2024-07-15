@@ -169,10 +169,12 @@ const PDFReceiptTaxInvoice = (props) => {
 										FINRIZE - Rise to financial Success
 									</Text>
 									<Text style={styles.text}>Tel-Aviv, Mivtsa kadesh 38 St</Text>
+									<Text style={styles.text}>Email: finrize@gmail.com</Text>
+									<Text style={styles.text}>Phone: +972 50-8900123</Text>
 								</View>
 								<View style={styles.headerRight}>
 									<Text style={styles.text}>
-										To: {props.receiptTaxInvoice.customerName}
+										To: {props.formObject.objectDetails.customer}
 									</Text>
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
@@ -184,14 +186,14 @@ const PDFReceiptTaxInvoice = (props) => {
 								</View>
 								<View style={styles.titleDate}>
 									<Text>
-										Production Date: {props.receiptTaxInvoice.createDate}{" "}
+										Production Date: {props.formObject.objectDetails.createDate}{" "}
 									</Text>
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
 							</View>
 							<Text style={styles.textDescription}>
 								Document Description:{" "}
-								{props.receiptTaxInvoice.documentDescription}
+								{props.formObject.objectDetails.documentDescription}
 							</Text>
 							<View style={styles.table}>
 								<View style={styles.tableRow}>
@@ -217,26 +219,27 @@ const PDFReceiptTaxInvoice = (props) => {
 								<View style={styles.tableRow}>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.receiptTaxInvoice.productArray[0].name}
+											{props.formObject.objectDetails.productArray[0].name}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.receiptTaxInvoice.productArray[0].quantity}
+											{props.formObject.objectDetails.productArray[0].quantity}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
-											{props.receiptTaxInvoice.productArray[0].unitPrice}
+											{props.formObject.objectDetails.productArray[0].unitPrice}
 										</Text>
 									</View>
 									<View style={styles.tableCol}>
 										<Text style={styles.tableCellHeader}>
 											{Number(
-												props.receiptTaxInvoice.productArray[0].unitPrice
+												props.formObject.objectDetails.productArray[0].unitPrice
 											) *
 												Number(
-													props.receiptTaxInvoice.productArray[0].quantity
+													props.props.formObject.objectDetails.productArray[0]
+														.quantity
 												)}
 										</Text>
 									</View>
@@ -277,7 +280,7 @@ const PDFReceiptTaxInvoice = (props) => {
 							<View style={styles.title}>
 								<View style={styles.textNotes}>
 									<Text>Notes:</Text>
-									<Text> {props.receiptTaxInvoice.notes}</Text>
+									<Text> {props.formObject.objectDetails.notes}</Text>
 								</View>
 
 								<View style={styles.textDigitalSignature}>

@@ -14,6 +14,9 @@ import {
 import React, { useState, useEffect } from "react";
 import DateCalendar from "./DateCalendar";
 import { Link } from "react-router-dom";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import {
 	ArrowBack,
 	AttachMoney,
@@ -32,12 +35,14 @@ function Overview(props) {
 
 	console.log("currentUser after cookie: ");
 	console.log(currentUser);
-
-	const [openTable, setOpenTable] = useState(null);
+	const [currentUserObject, setCurrentUserObject] = useState({});
 	const [img, setImg] = useState({
 		imageUrl: "",
 		nameInitials: "",
 	});
+
+	{
+		/*const [openTable, setOpenTable] = useState(null);
 	const [buttonColor, setButtonColor] = useState({
 		upcomingDebts: "primary",
 		openReceivables: "primary",
@@ -51,6 +56,8 @@ function Overview(props) {
 			openReceivables: table == "openReceivables" ? "secondary" : "primary",
 		}));
 	};
+*/
+	}
 	useEffect(() => {
 		const fetchCurrentUser = async () => {
 			try {
@@ -62,7 +69,10 @@ function Overview(props) {
 					imageUrl: userObject[0].objectDetails.profileImageUrl,
 					nameInitials: userObject[0].objectDetails.firstName,
 				});
+				console.log("userObject[0]:");
+				console.log(userObject[0]);
 
+				setCurrentUserObject(userObject[0]);
 				return userObject;
 			} catch (error) {
 				console.error("Error fetching customers:", error);
@@ -72,7 +82,6 @@ function Overview(props) {
 		console.log("userExtraDetails:");
 		console.log(userExtraDetails);
 	}, [img.imageUrl]);
-
 	return (
 		<>
 			<div
@@ -91,7 +100,7 @@ function Overview(props) {
 
 				<Box sx={{ width: "80%", maxWidth: 600 }}>
 					<Typography variant="h5" marginTop={2} marginLeft={2}>
-						{`Hello ${currentUser.username}`}
+						{`Hello, ${currentUser.username}!`}
 					</Typography>
 					<Typography variant="h6" marginTop={2} marginLeft={2}>
 						We are always here for you, wishing calmer days soon.
@@ -121,8 +130,11 @@ function Overview(props) {
 						}}
 						onClick={preventDefault}
 					>
-						<Link to="/taxinvoice">All Documents</Link>
-						<Link to="/customerlist">My Customers</Link>
+						<Link to={`/Incomes?email=${props.userEmail}`}>All Documents</Link>
+
+						<Link to={`/customerlist?email=${props.userEmail}`}>
+							My Customers
+						</Link>
 					</Box>
 					<Box
 						sx={{
@@ -133,7 +145,41 @@ function Overview(props) {
 							width: "90%",
 						}}
 					>
-						<Box display="flex" flexDirection="row" alignItems="center">
+						<Typography
+							variant="h5"
+							sx={{
+								color: "#0eba97",
+								fontFamily: "Arial",
+								fontWeight: "bold",
+								textAlign: "center",
+								marginTop: 2,
+							}}
+							gutterBottom
+						>
+							Business Details
+						</Typography>
+						<List>
+							<ListItem>
+								<ListItemText primary={`Name:  `} />
+								{/*${currentUserObject.objectDetails.extraDetails.businessDetails.name} */}
+							</ListItem>
+							<ListItem>
+								<ListItemText primary={`Business ID:`} />
+							</ListItem>
+							<ListItem>
+								<ListItemText primary={`Registration Number: `} />
+							</ListItem>
+							<ListItem>
+								<ListItemText primary={`City: `} />
+							</ListItem>
+							<ListItem>
+								<ListItemText primary={`Address: `} />
+							</ListItem>
+							<ListItem>
+								<ListItemText primary={`Phone Number: `} />
+							</ListItem>
+						</List>
+						{/*<Box display="flex" flexDirection="row" alignItems="center">
 							<Grid item xs={6}>
 								<Paper sx={{ padding: 2 }}>
 									<Box
@@ -225,6 +271,7 @@ function Overview(props) {
 								)}
 							</Grid>
 						</Box>
+							*/}
 					</Box>
 					<div
 						style={{
