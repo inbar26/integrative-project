@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Page,
 	Text,
@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 14,
 		marginTop: "20px",
+	},
+	textTotal: {
+		fontSize: 10,
+		fontFamily: "Times-Roman",
+		marginRight: "auto",
+		fontStyle: "bold",
+		textAlign: "right",
 	},
 	image: {
 		width: 150, // Adjust width
@@ -177,6 +184,18 @@ const PDFTaxInvoiceFile = (props) => {
 		},
 	];
 
+	const [total, setTotal] = useState(0);
+	useEffect(() => {
+		const calculateTotal = () => {
+			const totalAmount = props.formObject.objectDetails.productArray.reduce(
+				(acc, product) =>
+					acc + Number(product.unitPrice) * Number(product.quantity) * 1.17,
+				0
+			);
+			setTotal(totalAmount);
+		};
+		calculateTotal();
+	}, [props.formObject.objectDetails.productArray]);
 	return (
 		<>
 			<Document>
@@ -268,14 +287,16 @@ const PDFTaxInvoiceFile = (props) => {
 											</View>
 											<View style={styles.tableCol}>
 												<Text style={styles.tableCellHeader}>
-													{Number(product.unitPrice) * Number(product.quantity)}
+													{`${
+														Number(product.unitPrice) * Number(product.quantity)
+													} ${product.currency}`}
 												</Text>
 												<Text style={styles.secondaryText}>
-													{`After Vat: ${
+													{`After Vat: ${(
 														Number(product.unitPrice) *
 														Number(product.quantity) *
 														1.17
-													}`}
+													).toFixed(2)}`}
 												</Text>
 											</View>
 										</View>
@@ -285,6 +306,11 @@ const PDFTaxInvoiceFile = (props) => {
 								{/* ================================================================================================ */}
 
 								{/* HERE WE NEED TO ENTER THE REAL ITEMS */}
+							</View>
+							<View style={styles.text}>
+								<Text style={styles.textTotal}>
+									{`Total: ${total} ${props.formObject.objectDetails.productArray[0].currency}`}{" "}
+								</Text>
 							</View>
 							<View style={styles.title}>
 								<View style={styles.textNotes}>

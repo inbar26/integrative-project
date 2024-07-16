@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Page,
 	Text,
@@ -74,6 +74,13 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		marginTop: "20px",
 	},
+	textTotal: {
+		fontSize: 10,
+		fontFamily: "Times-Roman",
+		marginRight: "auto",
+		fontStyle: "bold",
+		textAlign: "right",
+	},
 	image: {
 		width: 150, // Adjust width
 		height: 50, // Adjust height
@@ -148,6 +155,11 @@ const styles = StyleSheet.create({
 		//סגנון עבור שורה זוגית בטבלה
 		backgroundColor: "#f2f2f2",
 	},
+	secondaryText: {
+		fontSize: 10,
+		color: "gray",
+		marginLeft: 10,
+	},
 });
 
 const PDFQuotationFile = (props) => {
@@ -162,6 +174,19 @@ const PDFQuotationFile = (props) => {
 			textC: "To:\n",
 		},
 	];
+
+	const [total, setTotal] = useState(0);
+	useEffect(() => {
+		const calculateTotal = () => {
+			const totalAmount = props.quotation.productArray.reduce(
+				(acc, product) =>
+					acc + Number(product.unitPrice) * Number(product.quantity) * 1.17,
+				0
+			);
+			setTotal(totalAmount);
+		};
+		calculateTotal();
+	}, [props.quotation.productArray]);
 	return (
 		<>
 			<Document>
@@ -199,14 +224,7 @@ const PDFQuotationFile = (props) => {
 									{/* HERE WE NEED TO ENTER THE REAL DETAILS */}
 								</View>
 							</View>
-							<View style={styles.title}>
-								<View style={styles.text}>
-									<Text>
-										{" "}
-										Payment Due Date: {props.quotation.paymentDueDate}
-									</Text>
-								</View>
-							</View>
+
 							<Text style={styles.textDescription}>
 								Document Description: {props.quotation.documentDescription}
 							</Text>
@@ -248,13 +266,27 @@ const PDFQuotationFile = (props) => {
 										</View>
 										<View style={styles.tableCol}>
 											<Text style={styles.tableCellHeader}>
-												{Number(product.unitPrice) * Number(product.quantity)}
+												{`${
+													Number(product.unitPrice) * Number(product.quantity)
+												} ${product.currency}`}
+											</Text>
+											<Text style={styles.secondaryText}>
+												{`After Vat: ${(
+													Number(product.unitPrice) *
+													Number(product.quantity) *
+													1.17
+												).toFixed(2)}`}
 											</Text>
 										</View>
 									</View>
 								))}
 
 								{/* HERE WE NEED TO ENTER THE REAL ITEMS */}
+							</View>
+							<View style={styles.text}>
+								<Text style={styles.textTotal}>
+									{`Total: ${total} ${props.quotation.productArray[0].currency}`}{" "}
+								</Text>
 							</View>
 							<View style={styles.title}>
 								<View style={styles.textNotes}>
