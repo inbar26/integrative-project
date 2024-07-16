@@ -279,7 +279,10 @@ const PDFTaxInvoiceFile = (props) => {
 								</View>
 								<View style={styles.textDigitalSignature}>
 									<Text>Digital signature</Text>
-									{/* HERE WE NEED TO ENTER THE REAL ITEMS */}
+									<Image
+										width={200}
+										src="https://firebasestorage.googleapis.com/v0/b/finrise-storage.appspot.com/o/images%2Fdigital_signature.png?alt=media&token=c424ac9d-addd-4788-8f8b-d83bd0428901"
+									/>
 								</View>
 							</View>
 							<Text
