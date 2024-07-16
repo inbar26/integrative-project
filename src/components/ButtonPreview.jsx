@@ -69,14 +69,13 @@ export default function ButtonPreview(props) {
 						Document Details:
 					</Typography>
 					<Typography gutterBottom>
-						{`customer Name: ${props.details.customer}`} <br />
+						{`customer Name: ${props.details.customer}`}
 						{/* {`Production Date: ${props.details.createDate}`} */}
 						<br />
 						{`Payment Due Date: ${props.details.paymentDueDate}`}
 						<br />
 						{`Document description: ${props.details.documentDescription}`}
 					</Typography>
-					{renderFormType(props.details)}
 					<Typography
 						sx={{
 							color: "#0eba97",

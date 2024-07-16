@@ -8,7 +8,7 @@ import {
 	View,
 } from "@react-pdf/renderer";
 import OriginalOnTransparent from "../assets/OriginalOnTransparent.png";
-import DigitalSignature from "../assets/DigitalSignature.png";
+import Signature from "../assets/Signature.png";
 
 const styles = StyleSheet.create({
 	body: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 		marginTop: "100px",
 		textAlign: "left",
 	},
-	textDigitalSignature: {
+	textSignature: {
 		fontSize: 10,
 		fontFamily: "Times-Roman",
 		marginTop: "100px",
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		marginVertical: 15,
 		marginHorizontal: 100,
 	},
-	imageDigitalS: {
+	imageSignature: {
 		marginTop: 2,
 		width: 100, // Adjust width
 		height: 50, // Adjust height
@@ -157,7 +157,7 @@ const PDFReceiptFile = (props) => {
 			textB:
 				"FinRize - Rise to financial Success\nTel-Aviv, Mivtsa Kadesh St 38\n",
 			image: OriginalOnTransparent,
-			imageDigitalS: DigitalSignature,
+			imageSignature: Signature,
 			textC: "To:\n",
 		},
 	];
@@ -241,11 +241,11 @@ const PDFReceiptFile = (props) => {
 									<Text> {props.receipt.notes}</Text>
 								</View>
 
-								<View style={styles.textDigitalSignature}>
-									<Text>Digital signature</Text>
+								<View style={styles.textSignature}>
+									<Text>Signature</Text>
 									<Image
-										style={styles.imageDigitalS}
-										src={page.imageDigitalS}
+										style={styles.imageSignature}
+										src={page.imageSignature}
 									/>
 								</View>
 							</View>
