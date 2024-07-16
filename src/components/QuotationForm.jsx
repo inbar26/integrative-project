@@ -477,9 +477,7 @@ const QuotationForm = (props) => {
         }}
       >
         <Box sx={{ mr: 2 }}>
-          <Button variant="outlined" color="primary">
-            Preview
-          </Button>
+          <ButtonPreview details={newQuotation} />
         </Box>
         <Box>
           <Button variant="contained" color="primary" onClick={handleSubmit}>

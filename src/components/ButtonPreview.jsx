@@ -154,7 +154,7 @@ export default function ButtonPreview(props) {
               <br />
               {`Currency: ${product.currency}`}
               <br />
-              {`Vat: ${product.vat}`}
+              {`Vat: ${product.vat ? "included" : "not Included"}`}
               <hr />
             </Typography>
           ))}
