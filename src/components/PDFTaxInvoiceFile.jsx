@@ -246,49 +246,43 @@ const PDFTaxInvoiceFile = (props) => {
                     <Text style={styles.tableCellHeader}>Total</Text>
                   </View>
                 </View>
-
+                {/* ================================================================================================ */}
                 {/* row for product */}
-                <View style={styles.tableRow}>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHeader}>
-                      {props.formObject.objectDetails.productArray[0].name}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHeader}>
-                      {props.formObject.objectDetails.productArray[0].quantity}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHeader}>
-                      {props.formObject.objectDetails.productArray[0].unitPrice}
-                    </Text>
-                  </View>
-                  <View style={styles.tableCol}>
-                    <Text style={styles.tableCellHeader}>
-                      {Number(
-                        props.formObject.objectDetails.productArray[0].unitPrice
-                      ) *
-                        Number(
-                          props.formObject.objectDetails.productArray[0]
-                            .quantity
-                        )}
-                    </Text>
-                    <Text style={styles.secondaryText}>
-                      {`After Vat: ${
-                        Number(
-                          props.formObject.objectDetails.productArray[0]
-                            .unitPrice
-                        ) *
-                        Number(
-                          props.formObject.objectDetails.productArray[0]
-                            .quantity
-                        ) *
-                        1.17
-                      }`}
-                    </Text>
-                  </View>
-                </View>
+                {props.formObject.objectDetails.productArray.map(
+                  (product, index) => (
+                    <View style={styles.tableRow} key={index}>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCellHeader}>
+                          {product.name}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCellHeader}>
+                          {product.quantity}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCellHeader}>
+                          {product.unitPrice}
+                        </Text>
+                      </View>
+                      <View style={styles.tableCol}>
+                        <Text style={styles.tableCellHeader}>
+                          {Number(product.unitPrice) * Number(product.quantity)}
+                        </Text>
+                        <Text style={styles.secondaryText}>
+                          {`After Vat: ${
+                            Number(product.unitPrice) *
+                            Number(product.quantity) *
+                            1.17
+                          }`}
+                        </Text>
+                      </View>
+                    </View>
+                  )
+                )}
+
+                {/* ================================================================================================ */}
 
                 {/* HERE WE NEED TO ENTER THE REAL ITEMS */}
               </View>
