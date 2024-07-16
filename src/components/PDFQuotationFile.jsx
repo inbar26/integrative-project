@@ -8,6 +8,7 @@ import {
 	View,
 } from "@react-pdf/renderer";
 import OriginalOnTransparent from "../assets/OriginalOnTransparent.png";
+import DigitalSignature from "../assets/DigitalSignature.png";
 
 const styles = StyleSheet.create({
 	body: {
@@ -64,6 +65,8 @@ const styles = StyleSheet.create({
 		fontFamily: "Times-Roman",
 		marginTop: "100px",
 		textAlign: "right",
+		flexDirection: "column",
+		alignItems: "flex-end",
 	},
 
 	textDescription: {
@@ -77,6 +80,11 @@ const styles = StyleSheet.create({
 		alignSelf: "center", // Center the image horizontally
 		marginVertical: 15,
 		marginHorizontal: 100,
+	},
+	imageDigitalS: {
+		marginTop: 2,
+		width: 100, // Adjust width
+		height: 50, // Adjust height
 	},
 
 	pageNumber: {
@@ -150,6 +158,7 @@ const PDFQuotationFile = (props) => {
 			textB:
 				"FinRize - Rise to financial Success\nTel-Aviv, Mivtsa Kadesh St 38\n",
 			image: OriginalOnTransparent,
+			imageDigitalS: DigitalSignature,
 			textC: "To:\n",
 		},
 	];
@@ -255,7 +264,10 @@ const PDFQuotationFile = (props) => {
 
 								<View style={styles.textDigitalSignature}>
 									<Text>Digital signature</Text>
-									{/* HERE WE NEED TO ENTER THE REAL ITEMS */}
+									<Image
+										style={styles.imageDigitalS}
+										src={page.imageDigitalS}
+									/>
 								</View>
 							</View>
 							<Text

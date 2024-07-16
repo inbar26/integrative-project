@@ -7,7 +7,20 @@ import {
 	StyleSheet,
 	View,
 } from "@react-pdf/renderer";
+import {
+	Box,
+	Avatar,
+	Grid,
+	Paper,
+	Button,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableRow,
+} from "@mui/material";
 import OriginalOnTransparent from "../assets/OriginalOnTransparent.png";
+import DigitalSignature from "../assets/DigitalSignature.png";
 import Typography from "antd/es/typography/Typography";
 
 const styles = StyleSheet.create({
@@ -64,6 +77,8 @@ const styles = StyleSheet.create({
 		fontFamily: "Times-Roman",
 		marginTop: "100px",
 		textAlign: "right",
+		flexDirection: "column",
+		alignItems: "flex-end",
 	},
 	textDescription: {
 		textAlign: "center",
@@ -76,6 +91,11 @@ const styles = StyleSheet.create({
 		alignSelf: "center", // Center the image horizontally
 		marginVertical: 15,
 		marginHorizontal: 100,
+	},
+	imageDigitalS: {
+		marginTop: 2,
+		width: 100, // Adjust width
+		height: 50, // Adjust height
 	},
 	pageNumber: {
 		position: "absolute",
@@ -152,9 +172,11 @@ const PDFTaxInvoiceFile = (props) => {
 			textB:
 				"FinRize - Rise to financial Success\nTel-Aviv, Mivtsa Kadesh St 38\n",
 			image: OriginalOnTransparent,
+			imageDigitalS: DigitalSignature,
 			textC: "To:\n",
 		},
 	];
+
 	return (
 		<>
 			<Document>
@@ -280,8 +302,8 @@ const PDFTaxInvoiceFile = (props) => {
 								<View style={styles.textDigitalSignature}>
 									<Text>Digital signature</Text>
 									<Image
-										width={200}
-										src="https://firebasestorage.googleapis.com/v0/b/finrise-storage.appspot.com/o/images%2Fdigital_signature.png?alt=media&token=c424ac9d-addd-4788-8f8b-d83bd0428901"
+										style={styles.imageDigitalS}
+										src={page.imageDigitalS}
 									/>
 								</View>
 							</View>
