@@ -128,7 +128,7 @@ function SignUpForm(props) {
               <FormLabel style={{ fontWeight: "bold" }}>Password*</FormLabel>
               <Input
                 name="password"
-                type="text"
+                type="password"
                 placeholder="Enter your Password"
                 value={props.dataExtra.password}
                 onChange={handleChangeExtra}
