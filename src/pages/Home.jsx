@@ -264,10 +264,10 @@ function Home() {
 						Contact Us
 					</Typography>
 					<Typography variant="body1" sx={{ lineHeight: 0 }}>
-						Email: support@finrize.com
+						Email: finrize@gmail.com
 					</Typography>
 					<Typography variant="body1" sx={{ lineHeight: 0 }}>
-						Phone: +1 (234) 567-890
+						Phone: +972 50-8900123
 					</Typography>
 					<Typography variant="body1" sx={{ lineHeight: 0 }}>
 						Address: Tel-Aviv, Mivtsa kadesh 38 St

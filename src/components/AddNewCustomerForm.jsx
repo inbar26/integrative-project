@@ -190,24 +190,24 @@ function AddNewCustomerForm() {
 								style={{ width: "100%", padding: "10px", margin: "10px 0" }}
 							/>
 
-							{/*   <label htmlFor="paymentMethod">Payment Method:</label>
-              <select
-                id="paymentMethod"
-                name="paymentMethod"
-                value={clientDetails.paymentMethod}
-                onChange={handleChange}
-                style={{
-                  width: "100%",
-                  height: "50px",
-                  fontSize: "16px",
-                  padding: "10px",
-                }}
-              >
-                <option value="credit-card">Credit Card</option>
-                <option value="bank-transfer">Bank Transfer</option>
-                <option value="cash">Cash</option>
-              </select>
-
+							<label htmlFor="paymentMethod">Payment Method:</label>
+							<select
+								id="paymentMethod"
+								name="paymentMethod"
+								value={clientDetails.paymentMethod}
+								onChange={handleChange}
+								style={{
+									width: "100%",
+									height: "50px",
+									fontSize: "16px",
+									padding: "10px",
+								}}
+							>
+								<option value="credit-card">Credit Card</option>
+								<option value="bank-transfer">Bank Transfer</option>
+								<option value="cash">Cash</option>
+							</select>
+							{/*
               <label htmlFor="bankName">Bank Name:</label>
               <input
                 type="text"

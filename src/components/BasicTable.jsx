@@ -19,27 +19,35 @@ import Box from "@mui/material/Box";
 import Skeleton from "@mui/material/Skeleton";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import { AlignVerticalCenter } from "@mui/icons-material";
+import exportCustomerListToExcel from "../utils/exportExcel";
+import Button from "@mui/material/Button";
+
 /*
   This component is a Table for the CUSTOMER LIST display
 */
 
 export default function BasicTable(props) {
 	const [customerObjectArray, setCustomerObjectArray] = useState([]);
+	const [customerObjectArrayE, setCustomerObjectArrayE] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [currentUser, setCurrentUser] = useState(null);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(50);
-	const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
 
 	useEffect(() => {
 		const fetchCustomers = async () => {
 			try {
-				const userObject = await objectService.getObjectByAlias(currentUser);
+				const cookieOb = JSON.parse(Cookies.get(props.userEmail));
+				setCurrentUser(cookieOb);
+				console.log("currentUser after cookie: ");
+				console.log(cookieOb);
+				const userObject = await objectService.getObjectByAlias(cookieOb);
 				console.log("userObject:");
 				console.log(userObject);
 
 				const commandDetails = {
 					type: constants.CLASS_TYPE.CUSTOMER,
-					userId: `${currentUser.userId.superapp}#${currentUser.userId.email}`,
+					userId: `${cookieOb.userId.superapp}#${cookieOb.userId.email}`,
 					page: page - 1,
 					size: 2,
 				};
@@ -48,7 +56,7 @@ export default function BasicTable(props) {
 				const customers = await commandService.invokeCommand(
 					constants.APP_NAME,
 					constants.COMMAND_NAME.ALL_OBJECTS_BY_TYPE_AND_CREATED_BY,
-					currentUser,
+					cookieOb,
 					userObject[0].objectId.id,
 					commandDetails
 				);
@@ -57,6 +65,11 @@ export default function BasicTable(props) {
 				console.log(customers);
 				setCustomerObjectArray([]);
 				setCustomerObjectArray(customers);
+				const arr = [];
+				customers.map((c) => {
+					arr.push(c.objectDetails);
+				});
+				setCustomerObjectArrayE(arr);
 			} catch (error) {
 				console.error("Error fetching customers:", error);
 			} finally {
@@ -71,6 +84,14 @@ export default function BasicTable(props) {
 		setPage(newPage);
 	};
 
+	const handleOnExportExcel = () => {
+		setLoading(true);
+		exportCustomerListToExcel(customerObjectArrayE);
+		setTimeout(() => {
+			setLoading(false);
+		}, 3000); // wait for 1 second
+	};
+
 	if (loading) {
 		return (
 			<Box>
@@ -83,6 +104,15 @@ export default function BasicTable(props) {
 
 	return (
 		<>
+			<Box>
+				<Button
+					onClick={handleOnExportExcel}
+					// loading={loading}
+					// disabled={loading}
+				>
+					Export Excel
+				</Button>
+			</Box>
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
 					<TableHead>

@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 
 const CustomerList = () => {
 	const location = useLocation();
+
 	const queryParams = new URLSearchParams(location.search);
 	const userEmail = queryParams.get("email");
 
