@@ -31,49 +31,39 @@ import * as constants from "../utils/constants";
 const preventDefault = (event) => event.preventDefault();
 
 function Overview(props) {
-  const currentUser = JSON.parse(Cookies.get(`${props.userEmail}`));
+  const [img, setImg] = useState({
+    imageUrl: "",
+    nameInitials: "",
+  });
+  const [currUserObject, setUserObject] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const cookieOb = JSON.parse(Cookies.get(props.userEmail));
+        setCurrentUser(cookieOb);
+        console.log("currentUser after cookie: ");
+        console.log(cookieOb);
+        const userObject = await objectService.getObjectByAlias(cookieOb);
+        console.log("userObject:");
+        console.log(userObject);
 
-	console.log("currentUser after cookie: ");
-	console.log(currentUser);
-	const [currentUserObject, setCurrentUserObject] = useState({});
-	const [img, setImg] = useState({
-		imageUrl: "",
-		nameInitials: "",
-	});
+        setImg({
+          imageUrl: userObject[0].objectDetails.profileImageUrl,
+          nameInitials: userObject[0].objectDetails.firstName,
+        });
+        setUserObject(userObject[0]);
+        console.log("userObject[0]:");
+        console.log(userObject[0]);
 
-	{
-		/*const [openTable, setOpenTable] = useState(null);
-	const [buttonColor, setButtonColor] = useState({
-		upcomingDebts: "primary",
-		openReceivables: "primary",
-	});
+        return userObject;
+      } catch (error) {
+        console.error("Error fetching customers:", error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
-  const handleButtonClick = (table) => {
-    setOpenTable(openTable === table ? null : table);
-    setButtonColor((prevState) => ({
-      ...prevState,
-      upcomingDebts: table == "upcomingDebts" ? "secondary" : "primary",
-      openReceivables: table == "openReceivables" ? "secondary" : "primary",
-    }));
-  };
-  const fetchCurrentUser = async () => {
-    try {
-      const userObject = await objectService.getObjectByAlias(currentUser);
-      console.log("userObject:");
-      console.log(userObject);
-      setImg({
-        imageUrl: userObject[0].objectDetails.profileImageUrl,
-        nameInitials: userObject[0].objectDetails.firstName,
-      });
-      return userObject;
-    } catch (error) {
-      console.error("Error fetching customers:", error);
-    }
-  };
-  const userExtraDetails = fetchCurrentUser();
-
-  console.log("userExtraDetails:");
-  console.log(userExtraDetails);
   return (
     <>
       <div
@@ -83,7 +73,6 @@ function Overview(props) {
           marginTop: "15px",
         }}
       >
-        {console.log("imaggeeee: " + img.imageUrl)}
         <Avatar
           src={img.imageUrl}
           alt={img.nameInitials}
@@ -92,9 +81,7 @@ function Overview(props) {
 
         <Box sx={{ width: "80%", maxWidth: 600 }}>
           <Typography variant="h5" marginTop={2} marginLeft={2}>
-            {`Hello ${currentUser.username}`}
-            {console.log("userExtraDetails[0]")}
-            {console.log(userExtraDetails[0])}
+            {currentUser && `Hello, ${currentUser.username}!`}
           </Typography>
           <Typography variant="h6" marginTop={2} marginLeft={2}>
             We are always here for you, wishing calmer days soon.
@@ -124,8 +111,11 @@ function Overview(props) {
             }}
             onClick={preventDefault}
           >
-            <Link to="/taxinvoice">All Documents</Link>
-            <Link to="/customerlist">My Customers</Link>
+            <Link to={`/Incomes?email=${props.userEmail}`}>All Documents</Link>
+
+            <Link to={`/customerlist?email=${props.userEmail}`}>
+              My Customers
+            </Link>
           </Box>
           <Box
             sx={{
@@ -136,34 +126,69 @@ function Overview(props) {
               width: "90%",
             }}
           >
-            <Box display="flex" flexDirection="row" alignItems="center">
-              <Grid item xs={6}>
-                <Paper sx={{ padding: 2 }}>
-                  <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="stretch"
-                  >
-                    <Button
-                      variant="contained"
-                      color={buttonColor["upcomingDebts"]}
-                      endIcon={<ArrowBack />}
-                      onClick={() => handleButtonClick("upcomingDebts")}
-                    >
-                      Upcoming Debts
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color={buttonColor["openReceivables"]}
-                      sx={{ mt: 2 }}
-                      endIcon={<AttachMoney />}
-                      onClick={() => handleButtonClick("openReceivables")}
-                    >
-                      Open Receivables
-                    </Button>
-                  </Box>
-                </Paper>
-              </Grid>
+            <Typography
+              variant="h5"
+              sx={{
+                color: "#0eba97",
+                fontFamily: "Arial",
+                fontWeight: "bold",
+                textAlign: "center",
+                marginTop: 2,
+              }}
+              gutterBottom
+            >
+              Business Details
+            </Typography>
+            <List>
+              <ListItem>
+                <ListItemText primary={`Name:  `} />$
+                {currUserObject && console.log(currUserObject)}
+                {/* {currUserObject.objectDetails.businessDetails.name} */}
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`Business ID:`} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`Registration Number: `} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`City: `} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`Address: `} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`Phone Number: `} />
+              </ListItem>
+            </List>
+            {/*<Box display="flex" flexDirection="row" alignItems="center">
+							<Grid item xs={6}>
+								<Paper sx={{ padding: 2 }}>
+									<Box
+										display="flex"
+										flexDirection="column"
+										alignItems="stretch"
+									>
+										<Button
+											variant="contained"
+											color={buttonColor["upcomingDebts"]}
+											endIcon={<ArrowBack />}
+											onClick={() => handleButtonClick("upcomingDebts")}
+										>
+											Upcoming Debts
+										</Button>
+										<Button
+											variant="contained"
+											color={buttonColor["openReceivables"]}
+											sx={{ mt: 2 }}
+											endIcon={<AttachMoney />}
+											onClick={() => handleButtonClick("openReceivables")}
+										>
+											Open Receivables
+										</Button>
+									</Box>
+								</Paper>
+							</Grid>
 
 							<Grid item xs={8} sx={{ marginLeft: 25 }}>
 								{openTable === "upcomingDebts" && (
@@ -228,36 +253,36 @@ function Overview(props) {
 								)}
 							</Grid>
 						</Box>
-						</Box>
-					*/}
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "row",
-						}}
-					>
-						<Box
-							sx={{
-								border: "4px solid #ddd",
-								padding: 1,
-								borderRadius: 2,
-								marginTop: 5,
-								width: "40%",
-								marginRight: "50px",
-							}}
-						>
-							<img
-								src="src/assets/ExchangeRates.png"
-								alt="Your Image"
-								style={{
-									maxWidth: "100%",
-									maxHeight: "50%",
-									display: "block",
-									margin: "auto",
-									marginTop: "20px",
-									borderRadius: "10px",
-								}}
-							/>
+							*/}
+          </Box>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Box
+              sx={{
+                border: "4px solid #ddd",
+                padding: 1,
+                borderRadius: 2,
+                marginTop: 5,
+                width: "40%",
+                marginRight: "50px",
+              }}
+            >
+              <img
+                src="src/assets/ExchangeRates.png"
+                alt="Your Image"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "50%",
+                  display: "block",
+                  margin: "auto",
+                  marginTop: "20px",
+                  borderRadius: "10px",
+                }}
+              />
 
               <Typography
                 variant="h6"

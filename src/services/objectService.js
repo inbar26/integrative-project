@@ -23,12 +23,10 @@ export const postObject = async (objectBoundary) => {
 export const getObjectByAlias = async (user) => {
   try {
     console.log("user: ");
-    console.log(JSON.parse(user));
+    console.log(user);
     console.log("-=-==-=-=-=-=- ");
-    const userOb = JSON.parse(user);
-
     const response = await axios.get(
-      `${constants.BASE_URL}/superapp/objects/search/byAlias/${userOb.userId.email}?userSuperapp=${userOb.userId.superapp}&userEmail=${userOb.userId.email}`
+      `${constants.BASE_URL}/superapp/objects/search/byAlias/${user.userId.email}?userSuperapp=${user.userId.superapp}&userEmail=${user.userId.email}`
     );
     return response.data;
   } catch (error) {
