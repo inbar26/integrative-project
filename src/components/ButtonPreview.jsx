@@ -28,63 +28,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const renderFormType = (form) => {
-  // a function for the form type
-  console.log("Form Type:", form.type);
-  console.log("Form Details:", form);
-  switch (form.type) {
-    case constants.FORM_TYPE.TAX_INVOICE:
-      return (
-        <>
-          <Typography gutterBottom>
-            {`Payment Due Date: ${form.paymentDueDate}`}
-          </Typography>
-          <Typography
-            sx={{
-              color: "#0eba97",
-              fontFamily: "Arial",
-              fontWeight: "bold",
-              marginTop: 5,
-            }}
-            gutterBottom
-          >
-            Products Details:
-          </Typography>
-          {form.productArray.map((product, index) => (
-            <Typography key={index} gutterBottom>
-              {`Product Name: ${product.name}`} <br />
-              {`Quantity: ${product.quantity}`} <br />
-              {`Unit Price: ${product.unitPrice}`} <br />
-              {`Currency: ${product.currency}`} <br />
-              {`Vat: ${product.vat}`}
-            </Typography>
-          ))}
-        </>
-      );
-    case constants.FORM_TYPE.QUOTE:
-      return (
-        <StyledTableCell align="right">No action available</StyledTableCell>
-      );
-    case constants.FORM_TYPE.RECEIPT:
-      return (
-        <StyledTableCell align="right">No action available</StyledTableCell>
-      );
-
-    case constants.FORM_TYPE.DELIVERY_NOTE:
-      return (
-        <StyledTableCell align="right">No action available</StyledTableCell>
-      );
-    case constants.FORM_TYPE.RECEIPT_TAX_INVOICE:
-      return (
-        <StyledTableCell align="right">No action available</StyledTableCell>
-      );
-    default:
-      return (
-        <StyledTableCell align="right">No action available</StyledTableCell>
-      );
-  }
-};
-
 export default function ButtonPreview(props) {
   const [open, setOpen] = React.useState(false);
 
@@ -129,11 +72,11 @@ export default function ButtonPreview(props) {
             {`customer Name: ${props.details.customer}`} <br />
             {/* {`Production Date: ${props.details.createDate}`} */}
             <br />
-            {`Payment Due Date: ${props.details.paymentDueDate}`}
+            {props.details.paymentDueDate &&
+              `Payment Due Date: ${props.details.paymentDueDate}`}
             <br />
             {`Document description: ${props.details.documentDescription}`}
           </Typography>
-          {renderFormType(props.details)}
           <Typography
             sx={{
               color: "#0eba97",
