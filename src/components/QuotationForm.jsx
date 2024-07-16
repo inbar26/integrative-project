@@ -231,12 +231,7 @@ const QuotationForm = (props) => {
 							)}
 						/>
 					</Grid>
-					{/* <Grid item xs={10} sm={10}>
-            <Typography variant="body2" gutterBottom>
-              Payment due Date:
-            </Typography>
-            <DatePicker onChange={handleDateChange} />
-          </Grid> */}
+
 					<Grid item xs={12}>
 						<TextField
 							label="Document Description"
