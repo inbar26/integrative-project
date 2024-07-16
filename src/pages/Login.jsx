@@ -46,7 +46,10 @@ function Login() {
       console.log(userObject[0].objectDetails);
       console.log(userObject[0].objectDetails.password);
 
-      if (userObject[0].objectDetails.password !== details.password) {
+      if (
+        userObject[0].objectDetails.password !== details.password ||
+        !details.password
+      ) {
         console.log("Incorrect Password");
         setAlertMessage("Incorrect Password");
         setShowAlert(true);

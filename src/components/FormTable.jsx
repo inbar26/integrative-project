@@ -171,7 +171,7 @@ const renderFormAction = (form) => {
         <StyledTableCell align="center">
           <PDFDownloadLink
             document={<PDFQuotationFile quotation={form.objectDetails} />}
-            fileName={`Quotation - ${form.customer}`}
+            fileName={`Quotation`}
           >
             {({ loading }) =>
               loading ? (
@@ -201,7 +201,7 @@ const renderFormAction = (form) => {
         <StyledTableCell align="center">
           <PDFDownloadLink
             document={<PDFReceiptFile receipt={form.objectDetails} />}
-            fileName={`Receipt - ${form.createDate}`}
+            fileName={`Receipt`}
           >
             {({ loading }) =>
               loading ? (
@@ -232,7 +232,7 @@ const renderFormAction = (form) => {
         <StyledTableCell align="center">
           <PDFDownloadLink
             document={<PDFDeliveryNoteFile deliveryNote={form.objectDetails} />}
-            fileName={`Delivery Note - ${form.creationTimestamp}`}
+            fileName={`Delivery Note`}
           >
             {({ loading }) =>
               loading ? (
