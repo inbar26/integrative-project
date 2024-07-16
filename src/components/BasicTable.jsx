@@ -104,9 +104,12 @@ export default function BasicTable(props) {
 
 	return (
 		<>
-			<Box>
+			<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 				<Button
 					onClick={handleOnExportExcel}
+					variant="outlined"
+					color="primary"
+					sx={{ borderColor: "primary.main", marginBottom: "10px" }}
 					// loading={loading}
 					// disabled={loading}
 				>

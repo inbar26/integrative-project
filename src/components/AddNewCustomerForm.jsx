@@ -26,9 +26,9 @@ function AddNewCustomerForm() {
 		street: "",
 		zipcode: "",
 		paymentMethod: "credit-card",
-		bankName: "",
-		accountNumber: "",
-		branchNumber: "",
+		// bankName: "",
+		// accountNumber: "",
+		// branchNumber: "",
 	});
 
 	// Handle form input changes
