@@ -1,5 +1,9 @@
 # Business-Owner-Client
 
+FinRise is a platform designed to simplify financial management for small businesses and their accountants. It allows small business owners to manage their finances by generating reports, creating financial forms, and facilitating easy interaction with their accountants. For accountants, FinRise provides a platform to manage small business accounts and generate comprehensive financial reports, enhancing their ability to provide a more efficient service. 
+
+In the FinRise project, I was in charge of building the front-end of the platform. My job was to create easy-to-use interfaces that help small business owners and accountants interact with the platform. I worked on features like generating reports, creating financial forms, and making sure the platform is simple for users. I also collaborated with the back-end team to ensure everything worked smoothly together.
+
 # Requirements
 
 ## linux users(Ubuntu 20.04)
